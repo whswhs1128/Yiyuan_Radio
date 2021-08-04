@@ -10,16 +10,46 @@ android {
         applicationId "com.sany.yiyuan_radio"
         minSdkVersion 21
         targetSdkVersion 30
-        versionCode 1
-        versionName "1.0"
+        versionCode 100
+        versionName "1.0.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+    allprojects {
+        repositories {
+            maven { url "https://jitpack.io" }
+        }
+    }
+
+    sourceSets {
+        main {
+            java.srcDirs = ['src/main/java', 'src/main/aidl']
+            resources.srcDirs = ['src/main/java', 'src/main/aidl']
+            aidl.srcDirs = ['src/main/aidl']
+            res.srcDirs = ['src/main/res']
+            assets.srcDirs = ['src/main/assets']
+            jniLibs.srcDirs = ['libs']
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
 
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    //rename apk
+    def app = "Yiyuan_Radio"
+    android.applicationVariants.all { variant ->
+        variant.outputs.all {
+            outputFileName  = app  + "_" +
+                    new Date().format("MM_dd") + "_" + buildType.name + ".apk"
         }
     }
     compileOptions {
@@ -36,4 +66,6 @@ dependencies {
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+    implementation 'com.github.atsushi-ageet:tray:0.14.0'
+    implementation 'com.github.naman14:TAndroidLame:1.1'
 }
